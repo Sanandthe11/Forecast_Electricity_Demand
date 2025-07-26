@@ -1,5 +1,5 @@
 
-''' cadence
+''' python
 from arch.unitroot import ADF, KPSS
 import numpy as np
 import pandas as pd
