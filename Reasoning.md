@@ -1,5 +1,7 @@
 
 ## Data Loading & Preprocessing
+
+Load the electricity demand dataset, parse datetime, and set it as an indexed time series.
 ``` python
 from arch.unitroot import ADF, KPSS
 import numpy as np
@@ -17,7 +19,7 @@ df.set_index('date', inplace=True)
 df.index.freq = 'D'
 ```
 
-```cadence
+```python
 
 plt.figure(figsize=(12, 6))
 plt.plot_date(df.index, df['demand'],'o-')
