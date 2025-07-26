@@ -34,7 +34,7 @@ plt.gcf().autofmt_xdate()
 plt.show()
 ```
 
-##Stationarity Diagnostics (ADF & KPSS)
+## Stationarity Diagnostics (ADF & KPSS)
 
 Check whether the time series is stationary—an essential condition for ARIMA models.
 ```cadence
@@ -44,7 +44,7 @@ print(adf_result.summary())
 kpss_result = KPSS(df['demand'].dropna(), lags=1)
 print(kpss_result.summary())
 ```
-##Train-Test Split
+## Train-Test Split
 
 Segment the data for model training and evaluation (80-20 split).
 ```cadence
@@ -55,6 +55,9 @@ train = df['demand'].iloc[:split_point]
 test = df['demand'].iloc[split_point:]
 ```
 
+## ACF & PACF Analysis (Before and After Differencing)
+
+Explore autocorrelation and partial autocorrelation to guide selection of ARIMA order (p,d,q).
 ```cadence
 
 # ACF and PACF plots to find (pdq) [after diffrencing]
@@ -79,6 +82,9 @@ plt.tight_layout()
 plt.show()
 ```
 
+## STL Decomposition
+
+Decompose the time series into trend, seasonal, and residual components.
 ```cadence
 
 stl = STL(df['demand'], period=12, robust=True)
@@ -88,6 +94,9 @@ seasonal = result.seasonal
 resid = result.resid.dropna()
 ```
 
+## Residual Forecasting with auto-ARIMA
+
+Fit ARIMA model only on the residuals to forecast unexplained components.
 ```cadence
 
 model = auto_arima(resid, seasonal=True, stepwise=True, suppress_warnings=True, trace=True)
@@ -99,6 +108,9 @@ last_trend = trend[-n_periods:].values
 last_seasonal = seasonal[-n_periods:].values
 ```
 
+## Forecast Reconstruction
+
+Combine ARIMA-predicted residuals with last observed trend + seasonal components.
 ```cadence
 
 reconstructed_forecast = forecast_resid + last_trend + last_seasonal
@@ -107,6 +119,9 @@ min_len = min(len(forecast_index), len(reconstructed_forecast))
 print(reconstructed_forecast)
 ```
 
+## Visualization of Final Forecast
+
+Overlay training data, actual test values, and forecasts for visual comparison.
 ```cadence
 
 plt.plot(train.index, train, label='Training', color='blue')
@@ -119,6 +134,9 @@ plt.title('Forecast with STL + ARIMA Residuals')
 plt.show()
 ```
 
+## Model Evaluation Metric
+
+Calculate MAE, MSE, and RMSE to assess accuracy of reconstructed forecasts.
 ```cadence
 
 mae = mean_absolute_error(test[:min_len], reconstructed_forecast[:min_len])
