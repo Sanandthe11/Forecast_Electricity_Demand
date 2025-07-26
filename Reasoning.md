@@ -18,7 +18,9 @@ df['date']=pd.to_datetime(df['date'], dayfirst=True)
 df.set_index('date', inplace=True)
 df.index.freq = 'D'
 ```
+## Time Series Plot
 
+Visualize the demand data over time to get a sense of trends, seasonality, and outliers.
 ```python
 
 plt.figure(figsize=(12, 6))
@@ -32,6 +34,9 @@ plt.gcf().autofmt_xdate()
 plt.show()
 ```
 
+##Stationarity Diagnostics (ADF & KPSS)
+
+Check whether the time series is stationary—an essential condition for ARIMA models.
 ```cadence
 
 adf_result = ADF(df['demand'].dropna(), lags=1)
@@ -39,7 +44,9 @@ print(adf_result.summary())
 kpss_result = KPSS(df['demand'].dropna(), lags=1)
 print(kpss_result.summary())
 ```
+##Train-Test Split
 
+Segment the data for model training and evaluation (80-20 split).
 ```cadence
 
 split_point = int(len(df['demand']) * 0.8)
